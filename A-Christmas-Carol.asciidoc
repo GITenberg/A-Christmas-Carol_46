@@ -1,6 +1,7 @@
 :toc:
 
-= A Christmas Carol, by Charles Dickens
+= A Christmas Carol
+Charles Dickens
 
 == STAVE  ONE.
 MARLEY’S GHOST.
