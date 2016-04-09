@@ -1,0 +1,49 @@
+_repo: A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas_46
+_version: 0.0.1
+contributor:
+  illustrator:
+    agent_name: Leech, John
+    alias: Leech, J. (John)
+    birthdate: 1817
+    deathdate: 1864
+    gutenberg_agent_id: '9473'
+    url: http://www.gutenberg.org/2009/agents/9473
+    wikipedia: http://en.wikipedia.org/wiki/John_Leech_%28caricaturist%29
+covers:
+- cover_type: archival
+  image_path: 46/46-h/images/bookcover.jpg
+  rights: Public domain in the USA.
+  rights_url: http://creativecommons.org/about/pdm
+creator:
+  author:
+    agent_name: Dickens, Charles
+    alias: Boz
+    birthdate: 1812
+    deathdate: 1870
+    gutenberg_agent_id: '37'
+    url: http://www.gutenberg.org/2009/agents/37
+    wikipedia: http://en.wikipedia.org/wiki/Charles_Dickens
+description: ''
+gutenberg_bookshelf:
+- Children's Literature
+- Christmas
+gutenberg_issued: '2004-08-11'
+gutenberg_type: Text
+identifiers:
+  gutenberg: '46'
+language: en
+publisher: Project Gutenberg
+rights: Public domain in the USA.
+rights_url: http://creativecommons.org/about/pdm
+subjects:
+- !lcsh 'Scrooge, Ebenezer (Fictitious character) -- Fiction'
+- !lcsh 'London (England) -- Fiction'
+- !lcsh 'Poor families -- Fiction'
+- !lcsh 'Christmas stories'
+- !lcsh 'Sick children -- Fiction'
+- !lcsh 'Ghost stories'
+- !lcc 'PR'
+- !lcsh 'Misers -- Fiction'
+- GITenberg
+title: A Christmas Carol in Prose; Being a Ghost Story of Christmas
+url: http://www.gutenberg.org/ebooks/46
