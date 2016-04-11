@@ -1,0 +1,59 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+- gem install asciidoctor -v 1.5.2 
+- gem install tilt
+- sudo pip install git+https://github.com/rdhyee/ebooklib.git
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+- asciidoctor -a toc,idprefix=xx_,version=$VERSION -b xhtml5 -T ./asciidoctor-htmlbook/htmlbook-autogen/
+  -d book book.asciidoc -o book.html
+- git clone https://github.com/gitenberg-dev/HTMLBook
+
+# make book.html available to jinja2 environment by putting it into templates
+- cp book.html asciidoctor-htmlbook/gitberg-machine/templates/
+
+- /usr/bin/python asciidoctor-htmlbook/gitberg-machine/machine.py -o . -m metadata.yaml book.html
+- xsltproc -stringparam external.assets.list " " ./HTMLBook/htmlbook-xsl/epub.xsl book.html
+- cp ./HTMLBook/stylesheets/epub/epub.css OEBPS
+- if [ -e cover.jpg ]; then cp cover.jpg OEBPS/cover.jpg; fi
+# look for first images directory and one found, copy over to ./OEBPS
+- find . -name images -type d | head -n 1 | xargs -I {} mv {} ./OEBPS/
+- zip -rX book.epub mimetype
+- zip -rX book.epub OEBPS/ META-INF/
+- if test -d "OEBPS/images/"; then zip -rX book.epub OEBPS/images/ ;fi
+- mv book.epub A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.epub
+- ebook-convert A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.epub A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.mobi
+- xvfb-run ebook-convert A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.epub A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: zG77+F9bKl5eQIW2fJUDXR8PVijoaN6uA3WdrBww2PGpNVtpb2SoolL5BkeNIwmE2EEG4yb1yltlWyTVzDQ9y5Jocs9mnvZDAm9R6v92OGs7lA0W05+z27q1iH3kkqXV2L04y4RoSkmjxqgXPmNj2zX6igzwK4+lJi3WyP+ld9OOwE4r1CRFQWY3xG5QvY0TZ6B3JOsZPvs7AlkUQteFOQordY2vrL7lv+FiiC5MNGvgpRtjwokMIZGzutcE3gy2z6xicDIULAifyUdw+EExF9pYkckTziGPHRGCQd3lDKEYue52biC8WuRSpIL7LTroRbj24H4xFZtvw2FcYFCq+1hLyvuEvWTcVvWU1x2IRpos8x7uVg2ZQMWcih/tWQp9QaTp0aMqHJrFpzcJg9Mjym52q+DEItOq8e4gQLw8tNV//ipVXHpbhk2iahbWajT8h+oIuirBNG4KhPNEMc2/bVussA/jSvWYPKR7cBy7OTNKtnj/SJIkLtd9eMN5ZZFN0Y5W/9SpsZlRITjdUVBYFp/9CoLAgg08xjIKjs85t42+KuAx1WqIKDtMGUCJ0ezhFk6EzO/1ALx2u6XVIBkj43pnwxhIC+TvtPj0q0V3rQaqxfR5DkT0KdYPb5f10FzXRB0olNAhcqQBcJunVm9+k7Rbr2cQMC/nau9Dc91Y7kE=
+  file:
+    - A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.epub
+    - A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.mobi
+    - A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.pdf
+  "on":
+    repo: GITenberg/A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas_46
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
