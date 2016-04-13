@@ -50,7 +50,7 @@ deploy:
     - A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.mobi
     - A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas.pdf
   "on":
-    repo: GITenberg/A-Christmas-Carol-in-Prose-Being-a-Ghost-Story-of-Christmas_46
+    repo: GITenberg/A-Christmas-Carol_46
 addons:
   apt:
     packages:
